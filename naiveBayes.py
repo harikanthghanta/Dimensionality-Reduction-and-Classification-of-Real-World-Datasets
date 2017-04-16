@@ -24,6 +24,7 @@ train , test = splitData(0.67)
 # print train
 # print "**************************************************************"
 # print test
+#comiited
 
 def separateByClass(dataset):
 	separate = {}
