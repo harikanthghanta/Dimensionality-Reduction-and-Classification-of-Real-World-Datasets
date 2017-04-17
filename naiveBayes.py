@@ -7,8 +7,6 @@ def readData(file):
 		data[i] = [float(x) for x in data[i]]
 	return data
 
-#readData('pima-indians-diabetes.data1.csv')
-
 
 def splitData(splitRatio):
 	data = readData('pima-indians-diabetes.data1.csv')
@@ -21,10 +19,6 @@ def splitData(splitRatio):
 
 train , test = splitData(0.67)
 
-# print train
-# print "**************************************************************"
-# print test
-#comiited
 
 def separateByClass(dataset):
 	separate = {}
@@ -36,6 +30,4 @@ def separateByClass(dataset):
 		separate[vector[-1]].append(vector)
 	return separate
 
-
-print separateByClass(train)
 
