@@ -1,5 +1,12 @@
 from collections import Counter
 
+def getAccuracy(determined_Y, real_Y):
+  correct = 0 
+  for x in range(len(real_Y)):
+    if real_Y[x] == determined_Y[x]:
+      correct += 1
+  return 100.0*correct/float(len(real_Y))
+
 def true_positives(determined_Y, real_Y, label):
   true_positives = 0
   for ii in range(0,len(determined_Y)):

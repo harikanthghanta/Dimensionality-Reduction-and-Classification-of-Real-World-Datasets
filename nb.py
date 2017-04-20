@@ -4,35 +4,30 @@ from evaluators import *
 import numpy as np
 import pandas as pd
 
-class NaiveBaseClass:
-    def calculate_relative_occurences(self, list1):
-        no_examples = len(list1)
-        ro_dict = dict(Counter(list1))
-        for key in ro_dict.keys():
-            ro_dict[key] = ro_dict[key] / float(no_examples)
-        return ro_dict
-
-    def get_max_value_key(self, d1):
-        values = d1.values()
-        keys = d1.keys()
-        max_value_index = values.index(max(values))
-        max_key = keys[max_value_index]
-        return max_key
-        
-    def initialize_nb_dict(self):
-        self.nb_dict = {}
-        for label in self.labels:
-            self.nb_dict[label] = defaultdict(list)
-
-
-
-class NaiveBayes(NaiveBaseClass):
+class NaiveBayes():
     """
     Naive Bayes Classifier:
     It is trained with a 2D-array X (dimensions m,n) and a 1D array Y (dimension 1,n).
     X should have one column per feature (total m) and one row per training example (total n).
     After training a dictionary is filled with the class probabilities per feature.
     """
+    def get_data(self):
+        datafile = './adult/adult.data'
+        file_test = './adult/adult.test'
+        df = pd.read_csv(datafile, header=None)
+        Y_train = df[14].values
+        print df
+        del df[14]
+        del df[2]
+        X_train = df.values
+
+        df_test = pd.read_csv(file_test, header=None)
+        Y_test = df_test[14].values
+        del df_test[14]
+        del df_test[2]
+        X_test = df_test.values
+        return X_train, Y_train, X_test, Y_test
+
     def train(self, X, Y):
         self.labels = np.unique(Y)
         no_rows, no_cols = np.shape(X)
@@ -73,25 +68,30 @@ class NaiveBayes(NaiveBaseClass):
             self.predicted_Y_values.append(prediction)
         return self.predicted_Y_values
 
-def adult():
-    datafile = './adult/adult.data'
-    file_test = './adult/adult.test'
-    df = pd.read_csv(datafile, header=None)
-    Y_train = df[14].values
-    del df[14]
-    del df[2]
-    X_train = df.values
+    def calculate_relative_occurences(self, data):
+        no_examples = len(data)
+        ro_dict = dict(Counter(data))
+        for key in ro_dict.keys():
+            ro_dict[key] = ro_dict[key] / float(no_examples)
+        return ro_dict
 
-    df_test = pd.read_csv(file_test, header=None)
-    Y_test = df_test[14].values
-    del df_test[14]
-    del df_test[2]
-    X_test = df_test.values
-    return X_train, Y_train, X_test, Y_test
+    def get_max_value_key(self, data):
+        values = data.values()
+        keys = data.keys()
+        max_value_index = values.index(max(values))
+        max_key = keys[max_value_index]
+        return max_key
+        
+    def initialize_nb_dict(self):
+        self.nb_dict = {}
+        for label in self.labels:
+            self.nb_dict[label] = defaultdict(list)
 
-X_train, Y_train, X_test, Y_test = adult()
+
+
 print("training naive bayes")
 nbc = NaiveBayes()
+X_train, Y_train, X_test, Y_test = nbc.get_data()
 nbc.train(X_train, Y_train)
 print("trained")
 predicted_Y = nbc.classify(X_test)
@@ -99,4 +99,6 @@ y_labels = np.unique(Y_test)
 print y_labels
 for y_label in y_labels:
     f1 = f1_score(predicted_Y, Y_test, y_label)
+    a = getAccuracy(predicted_Y, Y_test)
+    print("Accuracy is: %s" % a)
     print("F1-score on the test-set for class %s is: %s" % (y_label, f1))
