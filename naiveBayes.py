@@ -1,6 +1,7 @@
 import csv
 import math
 import random as rd
+from matplotlib import pyplot as plt
 
 def readData(file):
 	data = list(csv.reader(open(file,'rb')))
@@ -75,14 +76,25 @@ def predict(summaries, inputData):
 		if className is None or prob > bestProb :
 			bestProb = prob
 			className = classValue
+
 	return className
 
 def getPredictions(summaries, testData):
 	predictions = []
+	class0=[]
+	class1=[]
 	for each in testData:
 		res = predict(summaries, each)
+		probs = calculateClassProb(summaries, each)
+		for classValue, prob in probs.iteritems():
+			if classValue is 1.0:
+				class0.append(prob)
+			else:
+				class1.append(prob)
 		predictions.append(res)
-
+	plt.scatter(range(-1,1),class0,color='red')
+	plt.scatter(range(-1,1),class1,color='blue')
+	plt.show()
 	return predictions
 def getAccuracy(testData, predictions):
 	correct = 0 

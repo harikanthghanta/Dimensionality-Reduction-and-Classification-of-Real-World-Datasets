@@ -1,6 +1,17 @@
 from collections import Counter
 
 def getAccuracy(determined_Y, real_Y):
+  real_dict = dict(Counter(real_Y))
+  determined_dict = dict(Counter(determined_Y))
+
+  # print("Actual number of persons under category that make over 50K : %s \n" % (real_dict.get(' >50K')))
+  # print("Number of persons Classified under category that make over 50K : %s \n" % (determined_dict.get(' >50K')))
+  # print("Actual number of persons under category that make less/equal to 50K : %s \n" % (real_dict.get(' <=50K')))
+  # print("Number of persons Classified under category that make less/equal to 50K : %s \n" % (determined_dict.get(' <=50K')))
+
+  print(" Category \t Actual \t Determined \n")
+  print(" >50K     \t %s     \t %s \n" %(real_dict.get(' >50K'),determined_dict.get(' >50K')))
+  print(" <=50K    \t %s     \t %s \n" %(real_dict.get(' <=50K'),determined_dict.get(' <=50K')))
   correct = 0 
   for x in range(len(real_Y)):
     if real_Y[x] == determined_Y[x]:

@@ -1,6 +1,7 @@
 from collections import Counter, defaultdict
 from evaluators import *
-#import load_data as ld
+from matplotlib import pyplot as plt
+from matplotlib import colors
 import numpy as np
 import pandas as pd
 
@@ -12,11 +13,13 @@ class NaiveBayes():
     After training a dictionary is filled with the class probabilities per feature.
     """
     def get_data(self):
-        datafile = './adult/adult.data'
-        file_test = './adult/adult.test'
+        # datafile = './adult/adult.data'
+        # file_test = './adult/adult.test'
+        datafile = 'covtype.data'
+        file_test = 'covtype.test'
         df = pd.read_csv(datafile, header=None)
         Y_train = df[14].values
-        print df
+        #print df
         del df[14]
         del df[2]
         X_train = df.values
@@ -87,8 +90,6 @@ class NaiveBayes():
         for label in self.labels:
             self.nb_dict[label] = defaultdict(list)
 
-
-
 print("training naive bayes")
 nbc = NaiveBayes()
 X_train, Y_train, X_test, Y_test = nbc.get_data()
@@ -96,9 +97,9 @@ nbc.train(X_train, Y_train)
 print("trained")
 predicted_Y = nbc.classify(X_test)
 y_labels = np.unique(Y_test)
-print y_labels
+#print y_labels
+a = getAccuracy(predicted_Y, Y_test)
+print("Accuracy is: %s" % a)
 for y_label in y_labels:
     f1 = f1_score(predicted_Y, Y_test, y_label)
-    a = getAccuracy(predicted_Y, Y_test)
-    print("Accuracy is: %s" % a)
     print("F1-score on the test-set for class %s is: %s" % (y_label, f1))
