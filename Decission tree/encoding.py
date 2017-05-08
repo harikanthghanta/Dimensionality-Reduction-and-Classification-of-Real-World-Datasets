@@ -71,7 +71,7 @@ num_features = ['age', 'workclass_cat', 'fnlwgt', 'education_cat', 'education_nu
             	'sex_cat', 'capital_gain', 'capital_loss', 'hours_per_week',
             	'native_country_cat', 'income_cat']
 print adult_df_rev
-adult_df_rev.to_csv('./temp1.csv', sep=',', encoding='utf-8')
+adult_df_rev.to_csv('./temp.csv', sep=',', encoding='utf-8', index = None, header = None)
 scaled_features = {}
 for each in num_features:
 	mean, std = adult_df_rev[each].mean(), adult_df_rev[each].std()
