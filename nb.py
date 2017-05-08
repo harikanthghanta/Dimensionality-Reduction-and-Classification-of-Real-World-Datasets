@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 from matplotlib import colors
 import numpy as np
 import pandas as pd
+from sklearn.decomposition import PCA
 
 class NaiveBayes():
     """
@@ -13,10 +14,10 @@ class NaiveBayes():
     After training a dictionary is filled with the class probabilities per feature.
     """
     def get_data(self):
-        # datafile = './adult/adult.data'
-        # file_test = './adult/adult.test'
-        datafile = 'covtype.data'
-        file_test = 'covtype.test'
+        datafile = './adult/adult.data'
+        file_test = './adult/adult.test'
+        # datafile = 'covtype1.data'
+        # file_test = 'covtype1.test'
         df = pd.read_csv(datafile, header=None)
         Y_train = df[14].values
         #print df
@@ -30,6 +31,8 @@ class NaiveBayes():
         del df_test[2]
         X_test = df_test.values
         return X_train, Y_train, X_test, Y_test
+
+        
 
     def train(self, X, Y):
         self.labels = np.unique(Y)
@@ -90,6 +93,27 @@ class NaiveBayes():
         for label in self.labels:
             self.nb_dict[label] = defaultdict(list)
 
+    # def scatterplot3d(self,class1_sample, class2_sample):
+    #     all_samples = np.concatenate((class1_sample, class2_sample), axis=1)
+    #     fig = plt.figure(figsize=(10,10))
+    #     ax = fig.add_subplot(111, projection='3d')
+    #     plt.rcParams['legend.fontsize'] = 10   
+    #     ax.plot(class1_sample[0,:], class1_sample[1,:], class1_sample[2,:], 'o', markersize=8, color='blue', alpha=0.5, label='class1')
+    #     ax.plot(class2_sample[0,:], class2_sample[1,:], class2_sample[2,:], '^', markersize=8, alpha=0.5, color='red', label='class2')
+
+    #     plt.title('Samples for class 1 and class 2')
+    #     ax.legend(loc='upper right')
+
+    #     plt.show()
+
+    def PCA1(self, data):
+        print data
+        pca = PCA(n_components=3)
+        pca.fit(data)
+        transformed_data = pca.transform(data)
+        print transformed_data
+
+
 print("training naive bayes")
 nbc = NaiveBayes()
 X_train, Y_train, X_test, Y_test = nbc.get_data()
@@ -97,7 +121,6 @@ nbc.train(X_train, Y_train)
 print("trained")
 predicted_Y = nbc.classify(X_test)
 y_labels = np.unique(Y_test)
-#print y_labels
 a = getAccuracy(predicted_Y, Y_test)
 print("Accuracy is: %s" % a)
 for y_label in y_labels:

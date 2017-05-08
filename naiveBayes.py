@@ -11,7 +11,7 @@ def readData(file):
 
 
 def splitData(splitRatio):
-	data = readData('pima-indians-diabetes.data1.csv')
+	data = readData('temp1.csv')
 	trainSetSize = int(splitRatio * len(data))
 	trainSet = []
 	while len(trainSet) < trainSetSize:
@@ -19,6 +19,16 @@ def splitData(splitRatio):
 		trainSet.append(data.pop(i))
 	return [trainSet, data]
 
+def splitData1(data):
+	#data = readData('generateData.csv')
+	for i in range(0,len(data)):
+		data[i] = [float(x) for x in data[i]]
+	trainSetSize = int(0.67 * len(data))
+	trainSet = []
+	while len(trainSet) < trainSetSize:
+		i = rd.randrange(len(data))
+		trainSet.append(data.pop(i))
+	return [trainSet, data]
 
 
 
@@ -56,8 +66,8 @@ def summarizeByClass(data):
     return summaries
     
 def calProb(x, mean, stddev):
-    exponent = math.exp(-(math.pow(x-mean, 2)/(2*math.pow(stddev, 2))))
-    return (1/(math.sqrt(2*math.pi)*stddev))*exponent
+	exponent = math.exp(-(math.pow(x-mean, 2)/(2*math.pow(stddev, 2))))
+	return (1/(math.sqrt(2*math.pi)*stddev))*exponent
 
 def calculateClassProb(summaries, inputData):
 	prob = {}
@@ -85,17 +95,9 @@ def getPredictions(summaries, testData):
 	class1=[]
 	for each in testData:
 		res = predict(summaries, each)
-		probs = calculateClassProb(summaries, each)
-		for classValue, prob in probs.iteritems():
-			if classValue is 1.0:
-				class0.append(prob)
-			else:
-				class1.append(prob)
 		predictions.append(res)
-	plt.scatter(range(-1,1),class0,color='red')
-	plt.scatter(range(-1,1),class1,color='blue')
-	plt.show()
 	return predictions
+
 def getAccuracy(testData, predictions):
 	correct = 0 
 	for x in range(len(testData)):

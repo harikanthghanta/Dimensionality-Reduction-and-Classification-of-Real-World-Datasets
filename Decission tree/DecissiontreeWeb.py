@@ -167,12 +167,15 @@ def decision_tree(train, test, max_depth, min_size):
     for row in test:
 	    prediction = predict(tree, row)
 	    predictions.append(prediction)
+    print predictions
     return(predictions)
  
 # Test CART on Bank Note dataset
 seed(1)
 # load and prepare data
-filename = 'sampletemp1.csv'
+#filename = 'sampletemp1.csv'
+filename = 'generateData.csv'
+#filename = 'covtype.data'
 dataset = load_file(filename)
 # convert string attributes to integers
 for i in range(1,len(dataset[0])):
