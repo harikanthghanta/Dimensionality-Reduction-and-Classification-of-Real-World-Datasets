@@ -1,3 +1,4 @@
+,age,workclass_cat,fnlwgt,education_cat,education_num,marital_cat,occupation_cat,relationship_cat,race_cat,sex_cat,capital_gain,capital_loss,hours_per_week,native_country_cat,income_cat
 0,39,6,77516,9,13,4,0,1,4,1,2174,0,40,38,0
 1,50,5,83311,9,13,2,3,0,4,1,0,0,13,38,0
 2,38,3,215646,11,9,0,5,1,4,1,0,0,40,38,0
